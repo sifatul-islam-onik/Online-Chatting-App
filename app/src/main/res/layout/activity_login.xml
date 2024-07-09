@@ -10,9 +10,9 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:drawableRight="@drawable/logoSmall"
+        android:layout_width="248dp"
+        android:layout_height="47dp"
+        android:drawableRight="@drawable/logosmall"
         android:fontFamily="casual"
         android:text="ChatterBox"
         android:textAlignment="center"
@@ -20,15 +20,15 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/txtUsername"
+        app:layout_constraintBottom_toTopOf="@+id/txtLoginEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.66" />
+        app:layout_constraintVertical_bias="0.626" />
 
     <EditText
-        android:id="@+id/txtUsername"
+        android:id="@+id/txtLoginEmail"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="20dp"
