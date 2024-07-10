@@ -21,17 +21,22 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignupActivity extends AppCompatActivity {
 
     EditText name,email,pass,pass2;
     Button signup;
     FirebaseAuth mAuth;
-    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +77,45 @@ public class SignupActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Intent i = new Intent(SignupActivity.this,LoginActivity.class);
-                                    startActivity(i);
+                                    User user = new User(Email,Name, Timestamp.now(),FirebaseUtil.currentUserId());
+                                    FirebaseUtil.currentUser().set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+                                                startActivity(i);
+                                            }
+                                            else{
+                                                Toast.makeText(SignupActivity.this,"firestore error!",Toast.LENGTH_SHORT).show();
 
+                                            }
+                                        }
+                                    });
                                 } else {
-                                    Toast.makeText(SignupActivity.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                                    {
+                                        try
+                                        {
+                                            throw task.getException();
+                                        }
+                                        // if user enters wrong email.
+                                        catch (FirebaseAuthWeakPasswordException weakPassword)
+                                        {
+                                            Toast.makeText(SignupActivity.this, "Weak password!",Toast.LENGTH_SHORT).show();
+                                        }
+                                        // if user enters wrong password.
+                                        catch (FirebaseAuthInvalidCredentialsException malformedEmail)
+                                        {
+                                            Toast.makeText(SignupActivity.this, "Wrong email format!",Toast.LENGTH_SHORT).show();
+                                        }
+                                        catch (FirebaseAuthUserCollisionException existEmail)
+                                        {
+                                            Toast.makeText(SignupActivity.this, "Email already iin use!",Toast.LENGTH_SHORT).show();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Toast.makeText(SignupActivity.this, "Error!",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
                                 }
                             }
                         });

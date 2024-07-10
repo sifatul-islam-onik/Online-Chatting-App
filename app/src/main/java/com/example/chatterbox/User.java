@@ -1,40 +1,18 @@
 package com.example.chatterbox;
 
+import com.google.firebase.Timestamp;
+
 public class User {
-    String name, email,password,userId,fcmToken;
+    private String email;
+    private String name;
+    private Timestamp createdTimestamp;
+    private String userId;
 
-    public User() {
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getFcmToken() {
-        return fcmToken;
-    }
-
-    public void setFcmToken(String fcmToken) {
-        this.fcmToken = fcmToken;
-    }
-
-    public User(String name, String email, String password, String userId) {
-        this.name = name;
+    public User(String email, String name, Timestamp createdTimestamp, String userId) {
         this.email = email;
-        this.password = password;
-        this.userId = userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
+        this.createdTimestamp = createdTimestamp;
+        this.userId = userId;
     }
 
     public String getEmail() {
@@ -45,11 +23,27 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Timestamp getCreatedTimestamp() {
+        return createdTimestamp;
+    }
+
+    public void setCreatedTimestamp(Timestamp createdTimestamp) {
+        this.createdTimestamp = createdTimestamp;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
