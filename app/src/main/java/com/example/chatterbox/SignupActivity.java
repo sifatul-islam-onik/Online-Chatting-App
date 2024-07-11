@@ -34,7 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignupActivity extends AppCompatActivity {
 
-    EditText name,email,pass,pass2;
+    EditText name,email,username,pass,pass2;
     Button signup;
     FirebaseAuth mAuth;
 
@@ -52,6 +52,7 @@ public class SignupActivity extends AppCompatActivity {
 
         name = findViewById(R.id.txtName);
         email = findViewById(R.id.txtEmail);
+        username = findViewById(R.id.txtUserName);
         pass = findViewById(R.id.txtPass);
         pass2 = findViewById(R.id.txtPass2);
         signup = findViewById(R.id.btnNew);
@@ -64,6 +65,7 @@ public class SignupActivity extends AppCompatActivity {
                 String Email = email.getText().toString();
                 String Password = pass.getText().toString();
                 String Password2 = pass2.getText().toString();
+                String Username = username.getText().toString();
                 if(TextUtils.isEmpty(Name) || TextUtils.isEmpty(Email) || TextUtils.isEmpty(Password)){
                     Toast.makeText(SignupActivity.this,"Required fields are empty!",Toast.LENGTH_SHORT).show();
                     return;
@@ -77,7 +79,7 @@ public class SignupActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    User user = new User(Email,Name, Timestamp.now(),FirebaseUtil.currentUserId());
+                                    User user = new User(Email,Name, Username,Timestamp.now(),FirebaseUtil.currentUserId());
                                     FirebaseUtil.currentUser().set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {

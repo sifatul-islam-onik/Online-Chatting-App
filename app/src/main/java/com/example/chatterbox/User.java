@@ -5,14 +5,27 @@ import com.google.firebase.Timestamp;
 public class User {
     private String email;
     private String name;
+    private String username;
     private Timestamp createdTimestamp;
     private String userId;
 
-    public User(String email, String name, Timestamp createdTimestamp, String userId) {
+    public User() {
+    }
+
+    public User(String email, String name, String username, Timestamp createdTimestamp, String userId) {
         this.email = email;
         this.name = name;
+        this.username = username;
         this.createdTimestamp = createdTimestamp;
         this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

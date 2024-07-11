@@ -1,6 +1,8 @@
 package com.example.chatterbox;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -32,8 +34,25 @@ public class MainActivity extends AppCompatActivity {
         profileButton = findViewById(R.id.btnProfile);
         chatButton = findViewById(R.id.btnChat);
 
-
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment).commit();
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment).commit();
+            }
+        });
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame,profileFragment).commit();
+            }
+        });
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            }
+        });
 
     }
 }
