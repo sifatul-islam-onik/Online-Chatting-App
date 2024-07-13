@@ -1,6 +1,7 @@
 package com.example.chatterbox;
 
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
@@ -43,8 +44,9 @@ public class SearchActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                getOnBackPressedDispatcher().onBackPressed();
+            public void onClick(View view){
+                Intent i = new Intent(SearchActivity.this, MainActivity.class);
+                startActivity(i);
             }
         });
 

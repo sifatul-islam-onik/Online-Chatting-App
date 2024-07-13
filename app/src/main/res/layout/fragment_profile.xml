@@ -1,14 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
+    android:gravity="center"
+
+
+    android:orientation="vertical"
     tools:context=".ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/profilepicImg"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/circular_bg"
+        android:backgroundTint="@color/splashback"
+        android:padding="10dp"
+        android:src="@drawable/person_icon" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/profilenameTxt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/text_rounded_corner"
+        android:drawableRight="@drawable/icon_editable"
+        android:ems="10"
+        android:inputType="text"
+        android:padding="10dp"
+        android:text="Name"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/profileusernameTxt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/text_rounded_corner"
+        android:drawableRight="@drawable/icon_editable"
+        android:ems="10"
+        android:inputType="text"
+        android:padding="10dp"
+        android:text="Username"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/profileemailTxt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/text_rounded_corner"
+        android:ems="10"
+        android:padding="10dp"
+        android:text="Email"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/profileupdateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:padding="10dp"
+        android:text="Update Profile" />
+
+    <Button
+        android:id="@+id/profilelogoutBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#FD0000"
+        android:padding="10dp"
+        android:text="Logout" />
+</LinearLayout>

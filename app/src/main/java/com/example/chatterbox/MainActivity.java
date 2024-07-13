@@ -38,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame,profileFragment).commit();
             }
         });
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame,profileFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment).commit();
             }
         });
         searchButton.setOnClickListener(new View.OnClickListener() {

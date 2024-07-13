@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="@color/background"
+    android:background="@drawable/text_rounded_corner"
+    android:backgroundTint="@color/background"
     android:elevation="2dp"
     android:gravity="center">
 
