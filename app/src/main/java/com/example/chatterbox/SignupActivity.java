@@ -89,7 +89,6 @@ public class SignupActivity extends AppCompatActivity {
                                             }
                                             else{
                                                 Toast.makeText(SignupActivity.this,"firestore error!",Toast.LENGTH_SHORT).show();
-
                                             }
                                         }
                                     });

@@ -68,22 +68,46 @@
         android:text="Email"
         android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/profileupdateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
-        android:padding="10dp"
-        android:text="Update Profile" />
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-    <Button
-        android:id="@+id/profilelogoutBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:backgroundTint="#FD0000"
-        android:padding="10dp"
-        android:text="Logout" />
+        <Button
+            android:id="@+id/profileupdateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:padding="15dp"
+            android:text="Update Profile"
+            android:textSize="18sp"
+            app:cornerRadius="10dp" />
+
+        <Button
+            android:id="@+id/cngPass"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="15dp"
+            android:text="Change Password"
+            android:textSize="18sp"
+            app:cornerRadius="10dp" />
+
+        <Button
+            android:id="@+id/profilelogoutBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="#FD0000"
+            android:padding="10dp"
+            android:text="Logout"
+            android:textSize="16sp" />
+    </LinearLayout>
+
 </LinearLayout>

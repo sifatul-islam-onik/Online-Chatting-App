@@ -2,7 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="splashback">#877993</color>
+    <color name="splashback">#9555ab</color>
     <color name="background">#e7d7f5</color>
     <color name="sender">#2196F3</color>
     <color name="receiver">#D5D2D2</color>

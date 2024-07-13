@@ -24,7 +24,7 @@ public class ProfileFragment extends Fragment {
     ImageView profilepic;
     EditText name;
     TextView username,email;
-    Button update,logout;
+    Button update,logout,changepass;
     User user;
 
     public ProfileFragment() {
@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment {
         email = view.findViewById(R.id.profileemailTxt);
         update = view.findViewById(R.id.profileupdateBtn);
         logout = view.findViewById(R.id.profilelogoutBtn);
+        changepass = view.findViewById(R.id.cngPass);
 
         getUserData();
 
@@ -58,8 +59,17 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FirebaseUtil.logOut();
+                Toast.makeText(getActivity(),"Logging out!",Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getContext(), LoginActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
+        });
+
+        changepass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), ChangePasswordActivity.class);
                 startActivity(i);
             }
         });
