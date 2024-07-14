@@ -1,10 +1,12 @@
 package com.example.chatterbox;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -18,11 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
 
@@ -34,6 +38,7 @@ public class ChatActivity extends AppCompatActivity {
     TextView username,fullname;
     EditText msg;
     ImageButton back,send;
+    ImageView profilePic;
     RecyclerView recyclerView;
     ChatRecyclerAdapter adapter;
 
@@ -53,6 +58,7 @@ public class ChatActivity extends AppCompatActivity {
         msg = findViewById(R.id.txtMsg);
         back = findViewById(R.id.btnBackChat);
         send = findViewById(R.id.btnSend);
+        profilePic = findViewById(R.id.profilePic);
         recyclerView = findViewById(R.id.recyclerView);
         otherUser = new User();
 
@@ -64,6 +70,13 @@ public class ChatActivity extends AppCompatActivity {
         otherUser.setEmail(i.getStringExtra("email"));
         username.setText(otherUser.getUsername());
         fullname.setText(otherUser.getName());
+
+        FirebaseUtil.getStorageReference().child("users/"+otherUser.getUserId()+"/profile.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profilePic);
+            }
+        });
 
         chatRoomId = FirebaseUtil.getChatRoomId(FirebaseUtil.currentUserId(),otherUser.getUserId());
 

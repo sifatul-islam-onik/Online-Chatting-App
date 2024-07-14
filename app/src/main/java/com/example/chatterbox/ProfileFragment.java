@@ -1,16 +1,24 @@
 package com.example.chatterbox;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +30,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
 
@@ -31,6 +41,8 @@ public class ProfileFragment extends Fragment {
     Button update,logout,changepass,verify;
     User user;
     LinearLayout verifyLayout;
+    ImageButton editpic;
+    ActivityResultLauncher<Intent> pickImage;
 
     public ProfileFragment() {
 
@@ -51,6 +63,7 @@ public class ProfileFragment extends Fragment {
         changepass = view.findViewById(R.id.cngPass);
         verify = view.findViewById(R.id.verifyBtn);
         verifyLayout = view.findViewById(R.id.verificationLayout);
+        editpic = view.findViewById(R.id.editpicBtn);
 
         getUserData();
 
@@ -106,6 +119,37 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        editpic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickImage.launch(i);
+            }
+        });
+
+        pickImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult o) {
+                try{
+                    Uri image = o.getData().getData();
+                    profilepic.setImageURI(image);
+                    FirebaseUtil.getStorageReference().child(FirebaseUtil.getProfilePicPath()).putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(getActivity(),"Profile picture updated!",Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(),"Upload failed! " + e.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }catch(Exception e){
+                    Toast.makeText(getActivity(),"No image selected!",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         return view;
     }
 
@@ -136,6 +180,17 @@ public class ProfileFragment extends Fragment {
 
 
     void getUserData() {
+        FirebaseUtil.getStorageReference().child(FirebaseUtil.getProfilePicPath()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profilepic);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(),"Profile Picture loading failed! " + e.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
         FirebaseUtil.currentUser().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
