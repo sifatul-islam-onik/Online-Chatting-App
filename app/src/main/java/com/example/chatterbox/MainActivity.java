@@ -6,10 +6,12 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         profileButton = findViewById(R.id.btnProfile);
         chatButton = findViewById(R.id.btnChat);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment,"chat_fragment").commit();
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment,"chat_fragment").commit();
             }
         });
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +55,5 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
             }
         });
-
     }
 }

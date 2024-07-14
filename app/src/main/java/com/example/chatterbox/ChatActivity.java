@@ -93,7 +93,7 @@ public class ChatActivity extends AppCompatActivity {
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view){
                 String message = msg.getText().toString().trim();
                 if(message.isEmpty()) return;
                 sendMsg(message);

@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="10dp"
+                android:textColor="@color/black"
                 tools:text="10:00" />
         </RelativeLayout>
 
@@ -46,6 +47,7 @@
             android:id="@+id/lastMsgTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="+000000000000" />
+            android:textColor="@color/black"
+            tools:text="Username" />
     </LinearLayout>
 </LinearLayout>

@@ -149,7 +149,7 @@
     <Button
         android:id="@+id/profilelogoutBtn"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="#FD0000"
         android:padding="10dp"

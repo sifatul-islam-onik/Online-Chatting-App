@@ -50,7 +50,6 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessage, C
         LinearLayout leftChat,rightChat;
         TextView leftmsg,rightmsg;
 
-
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -58,8 +57,6 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessage, C
             rightChat = itemView.findViewById(R.id.myLayout);
             leftmsg = itemView.findViewById(R.id.otherTxt);
             rightmsg = itemView.findViewById(R.id.myTxt);
-
-
         }
     }
 }
