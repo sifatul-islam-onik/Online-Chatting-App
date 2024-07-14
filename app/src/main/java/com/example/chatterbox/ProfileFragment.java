@@ -12,11 +12,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class ProfileFragment extends Fragment {
@@ -24,8 +28,9 @@ public class ProfileFragment extends Fragment {
     ImageView profilepic;
     EditText name;
     TextView username,email;
-    Button update,logout,changepass;
+    Button update,logout,changepass,verify;
     User user;
+    LinearLayout verifyLayout;
 
     public ProfileFragment() {
 
@@ -44,8 +49,14 @@ public class ProfileFragment extends Fragment {
         update = view.findViewById(R.id.profileupdateBtn);
         logout = view.findViewById(R.id.profilelogoutBtn);
         changepass = view.findViewById(R.id.cngPass);
+        verify = view.findViewById(R.id.verifyBtn);
+        verifyLayout = view.findViewById(R.id.verificationLayout);
 
         getUserData();
+
+        if(FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+            verifyLayout.setVisibility(View.GONE);
+        }
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +82,27 @@ public class ProfileFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), ChangePasswordActivity.class);
                 startActivity(i);
+            }
+        });
+
+        verify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+                    verifyLayout.setVisibility(View.GONE);
+                    return;
+                }
+                FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(getActivity(),"Verification email sent to your email address!",Toast.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(),"Action failed! "+ e.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 

@@ -11,12 +11,41 @@
     android:orientation="vertical"
     tools:context=".ProfileFragment">
 
+    <LinearLayout
+        android:id="@+id/verificationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/verifyTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Your email is not verified yet!"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/verifyBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:padding="10dp"
+            android:text="Verify Now"
+            app:cornerRadius="5dp" />
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/profilepicImg"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/circular_bg"
         android:backgroundTint="@color/splashback"
         android:padding="10dp"
@@ -69,45 +98,43 @@
         android:textSize="18sp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="10dp"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/profileupdateBtn"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="15dp"
             android:text="Update Profile"
-            android:textSize="18sp"
-            app:cornerRadius="10dp" />
+            android:textSize="16sp"
+            app:cornerRadius="5dp" />
 
         <Button
             android:id="@+id/cngPass"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:padding="15dp"
             android:text="Change Password"
-            android:textSize="18sp"
-            app:cornerRadius="10dp" />
+            android:textSize="16sp"
+            app:cornerRadius="5dp" />
 
-        <Button
-            android:id="@+id/profilelogoutBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="#FD0000"
-            android:padding="10dp"
-            android:text="Logout"
-            android:textSize="16sp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/profilelogoutBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#FD0000"
+        android:padding="10dp"
+        android:text="Logout"
+        android:textSize="16sp" />
 
 </LinearLayout>
