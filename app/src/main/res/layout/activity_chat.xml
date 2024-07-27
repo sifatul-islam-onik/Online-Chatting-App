@@ -26,7 +26,7 @@
             android:background="@null"
             android:contentDescription="back"
             android:padding="10dp"
-            app:srcCompat="@drawable/iconback" />
+            app:srcCompat="@drawable/icon_back" />
 
         <include
             layout="@layout/profile_pic"
@@ -75,33 +75,36 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="80dp" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/bottom"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:orientation="horizontal"
         tools:layout_editor_absoluteX="10dp"
         tools:layout_editor_absoluteY="660dp">
 
         <EditText
             android:id="@+id/txtMsg"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toLeftOf="@id/btnAddphoto"
             android:layout_weight="1"
             android:background="@drawable/text_rounded_corner"
             android:hint="Write your message  "
             android:inputType="text"
-            android:padding="10dp"
+            android:padding="17dp"
             android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/btnAddphoto"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_toLeftOf="@id/btnSend"
             android:layout_weight="1"
             android:background="@null"
             android:contentDescription="photo"
@@ -109,11 +112,13 @@
 
         <ImageButton
             android:id="@+id/btnSend"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:background="@null"
             android:contentDescription="send"
-            app:srcCompat="@drawable/iconsend" />
-    </LinearLayout>
+            app:srcCompat="@drawable/icon_send" />
+    </RelativeLayout>
 </RelativeLayout>

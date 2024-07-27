@@ -24,9 +24,10 @@
             android:background="@color/splashback"
             android:drawableLeft="@drawable/logosmall"
             android:drawablePadding="10dp"
+            android:drawableTint="@color/black"
             android:fontFamily="monospace"
             android:padding="10dp"
-            android:text="ChatterBox"
+            android:text="@string/app_name"
             android:textColor="@color/black"
             android:textSize="34sp"
             android:textStyle="bold" />
@@ -39,46 +40,26 @@
             android:layout_weight="1"
             android:background="@color/splashback"
             android:contentDescription="search"
-            app:srcCompat="@drawable/iconsearch" />
+            app:srcCompat="@drawable/icon_search" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/bottombar"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="661dp">
-
-        <ImageButton
-            android:id="@+id/btnChat"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@color/splashback"
-            android:contentDescription="chat"
-            app:srcCompat="@drawable/iconchat" />
-
-        <ImageButton
-            android:id="@+id/btnProfile"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@color/splashback"
-            android:contentDescription="profile"
-            app:srcCompat="@drawable/iconprofile" />
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="match_parent"
-        android:layout_height="570dp"
-        android:layout_above="@id/bottombar"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomBar"
         android:layout_below="@id/topBar"
         tools:layout_editor_absoluteY="80dp">
 
     </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/background"
+        app:menu="@menu/bottom_navigation" />
 
 </RelativeLayout>

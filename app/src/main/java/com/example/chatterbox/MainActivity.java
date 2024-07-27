@@ -2,6 +2,7 @@ package com.example.chatterbox;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -13,11 +14,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+
 public class MainActivity extends AppCompatActivity {
 
     ImageButton searchButton,profileButton,chatButton;
     ChatFragment chatFragment;
     ProfileFragment profileFragment;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +38,23 @@ public class MainActivity extends AppCompatActivity {
         chatFragment = new ChatFragment();
         profileFragment = new ProfileFragment();
         searchButton = findViewById(R.id.btnSearch);
-        profileButton = findViewById(R.id.btnProfile);
-        chatButton = findViewById(R.id.btnChat);
+        bottomNavigationView = findViewById(R.id.bottomBar);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment,"chat_fragment").commit();
-        profileButton.setOnClickListener(new View.OnClickListener() {
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame,profileFragment).commit();
+            public boolean onNavigationItemSelected(MenuItem item) {
+                if(item.getItemId()==R.id.btnChat){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment,"chat_fragment").commit();
+                }
+                else if(item.getItemId()==R.id.btnProfile){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,profileFragment).commit();
+                }
+                return true;
             }
         });
-        chatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment,"chat_fragment").commit();
-            }
-        });
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
