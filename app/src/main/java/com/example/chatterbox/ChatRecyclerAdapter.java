@@ -3,17 +3,23 @@ package com.example.chatterbox;
 import static android.view.View.GONE;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.squareup.picasso.Picasso;
 
 public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessage, ChatRecyclerAdapter.ChatViewHolder> {
 
@@ -30,11 +36,39 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessage, C
             holder.leftChat.setVisibility(GONE);
             holder.rightChat.setVisibility(View.VISIBLE);
             holder.rightmsg.setText(model.getMessage());
+            if(model.getPhotoUrl().isEmpty()){
+                holder.rightphoto.setVisibility(GONE);
+                holder.rightmsg.setVisibility(View.VISIBLE);
+            }
+            else{
+                holder.rightphoto.setVisibility(View.VISIBLE);
+                holder.rightmsg.setVisibility(GONE);
+                FirebaseUtil.getStorageReference().child(model.photoUrl).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(holder.rightphoto);
+                    }
+                });
+            }
         }
         else{
             holder.leftChat.setVisibility(View.VISIBLE);
             holder.rightChat.setVisibility(GONE);
             holder.leftmsg.setText(model.getMessage());
+            if(model.getPhotoUrl().isEmpty()){
+                holder.leftphoto.setVisibility(GONE);
+                holder.leftmsg.setVisibility(View.VISIBLE);
+            }
+            else{
+                holder.leftphoto.setVisibility(View.VISIBLE);
+                holder.leftmsg.setVisibility(GONE);
+                FirebaseUtil.getStorageReference().child(model.photoUrl).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(holder.leftphoto);
+                    }
+                });
+            }
         }
     }
 
@@ -49,6 +83,7 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessage, C
 
         LinearLayout leftChat,rightChat;
         TextView leftmsg,rightmsg;
+        ImageView leftphoto,rightphoto;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -57,6 +92,8 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessage, C
             rightChat = itemView.findViewById(R.id.myLayout);
             leftmsg = itemView.findViewById(R.id.otherTxt);
             rightmsg = itemView.findViewById(R.id.myTxt);
+            leftphoto = itemView.findViewById(R.id.otherPhoto);
+            rightphoto = itemView.findViewById(R.id.myPhoto);
         }
     }
 }

@@ -1,15 +1,25 @@
 package com.example.chatterbox;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -20,14 +30,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class ChatActivity extends AppCompatActivity {
@@ -37,10 +51,11 @@ public class ChatActivity extends AppCompatActivity {
     ChatRoom chatRoom;
     TextView username,fullname;
     EditText msg;
-    ImageButton back,send;
+    ImageButton back,send,photo;
     ImageView profilePic;
     RecyclerView recyclerView;
     ChatRecyclerAdapter adapter;
+    ActivityResultLauncher<Intent> pickImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +73,7 @@ public class ChatActivity extends AppCompatActivity {
         msg = findViewById(R.id.txtMsg);
         back = findViewById(R.id.btnBackChat);
         send = findViewById(R.id.btnSend);
+        photo = findViewById(R.id.btnAddphoto);
         profilePic = findViewById(R.id.profilePic);
         recyclerView = findViewById(R.id.recyclerView);
         otherUser = new User();
@@ -86,8 +102,7 @@ public class ChatActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent i = new Intent(ChatActivity.this, MainActivity.class);
-                startActivity(i);
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
 
@@ -97,6 +112,64 @@ public class ChatActivity extends AppCompatActivity {
                 String message = msg.getText().toString().trim();
                 if(message.isEmpty()) return;
                 sendMsg(message);
+            }
+        });
+
+        photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendPhoto();
+            }
+        });
+
+        pickImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult o) {
+                try{
+                    Uri image = o.getData().getData();
+                    Bitmap bitmap = null;
+                    if (Build.VERSION.SDK_INT >= 29) {
+                        ImageDecoder.Source source = ImageDecoder.createSource(getApplicationContext().getContentResolver(), image);
+                        try {
+                            bitmap = ImageDecoder.decodeBitmap(source);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), image);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,25,baos);
+                    byte[] data = baos.toByteArray();
+                    Toast.makeText(ChatActivity.this,"Uploading photo...",Toast.LENGTH_SHORT).show();
+                    FirebaseUtil.getStorageReference().child("photoMsgs/" + chatRoom.getChatRoomId() + chatRoom.lastMsgTime.toString() + ".jpg").putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            chatRoom.setLastUrl("photoMsgs/" + chatRoom.getChatRoomId() + chatRoom.lastMsgTime.toString() + ".jpg");
+                            FirebaseUtil.getChatRoomReference(chatRoomId).set(chatRoom);
+                            ChatMessage chatMessage = new ChatMessage(chatRoom.getLastUrl(),chatRoom.lastMsgTime,chatRoom.lastMsgSenderId);
+                            FirebaseUtil.getChatRoomMessageReference(chatRoomId).add(chatMessage).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentReference> task) {
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(ChatActivity.this,"Photo sent! " ,Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ChatActivity.this,"Upload failed! " + e.getMessage(),Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }catch(Exception e){
+                    Toast.makeText(ChatActivity.this,"No image selected!",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -120,9 +193,18 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    void sendPhoto(){
+        chatRoom.setLastMsgSenderId(FirebaseUtil.currentUserId());
+        chatRoom.setLastMsgTime(Timestamp.now());
+        chatRoom.setLastMsg("");
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickImage.launch(i);
+    }
+
     void sendMsg(String message) {
         chatRoom.setLastMsgSenderId(FirebaseUtil.currentUserId());
         chatRoom.setLastMsg(message);
+        chatRoom.setLastUrl("");
         chatRoom.setLastMsgTime(Timestamp.now());
         FirebaseUtil.getChatRoomReference(chatRoomId).set(chatRoom);
         ChatMessage chatMessage = new ChatMessage(message,FirebaseUtil.currentUserId(),Timestamp.now());
@@ -150,5 +232,13 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(ChatActivity.this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 }

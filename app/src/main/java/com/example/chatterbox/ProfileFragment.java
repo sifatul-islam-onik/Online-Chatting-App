@@ -2,7 +2,10 @@ package com.example.chatterbox;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -32,6 +35,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class ProfileFragment extends Fragment {
 
@@ -133,7 +139,27 @@ public class ProfileFragment extends Fragment {
                 try{
                     Uri image = o.getData().getData();
                     profilepic.setImageURI(image);
-                    FirebaseUtil.getStorageReference().child(FirebaseUtil.getProfilePicPath()).putFile(image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                    Bitmap bitmap = null;
+                    if (Build.VERSION.SDK_INT >= 29) {
+                        ImageDecoder.Source source = ImageDecoder.createSource(getContext().getContentResolver(), image);
+                        try {
+                            bitmap = ImageDecoder.decodeBitmap(source);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), image);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,25,baos);
+                    byte[] data = baos.toByteArray();
+
+                    FirebaseUtil.getStorageReference().child(FirebaseUtil.getProfilePicPath()).putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Toast.makeText(getActivity(),"Profile picture updated!",Toast.LENGTH_SHORT).show();

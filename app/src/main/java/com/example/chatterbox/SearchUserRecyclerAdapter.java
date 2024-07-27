@@ -2,6 +2,7 @@ package com.example.chatterbox;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.squareup.picasso.Picasso;
 
 public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<User, SearchUserRecyclerAdapter.UserViewHolder> {
 
@@ -26,9 +29,17 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<User, Se
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
         holder.fullnameTxt.setText(model.getName());
-        holder.usernameTxt.setText(model.getUsername());
+        FirebaseUtil.getStorageReference().child("users/"+model.getUserId()+"/profile.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(holder.profilePic);
+            }
+        });
         if(model.getUserId().equals(FirebaseUtil.currentUserId())){
             holder.usernameTxt.setText(model.getUsername()+" (Me)");
+        }
+        else{
+            holder.usernameTxt.setText(model.getUsername());
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +72,6 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<User, Se
             usernameTxt = itemView.findViewById(R.id.userName);
             fullnameTxt = itemView.findViewById(R.id.fullName);
             profilePic = itemView.findViewById(R.id.profilePic);
-
         }
     }
 }

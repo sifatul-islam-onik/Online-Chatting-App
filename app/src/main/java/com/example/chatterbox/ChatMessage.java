@@ -5,6 +5,7 @@ import com.google.firebase.Timestamp;
 public class ChatMessage {
     String message;
     String senderId;
+    String photoUrl;
     Timestamp timestamp;
 
     public ChatMessage() {
@@ -14,6 +15,22 @@ public class ChatMessage {
         this.message = message;
         this.senderId = senderId;
         this.timestamp = timestamp;
+        photoUrl = "";
+    }
+
+    public ChatMessage(String photoUrl, Timestamp timestamp,String senderId) {
+        message = "";
+        this.senderId = senderId;
+        this.photoUrl = photoUrl;
+        this.timestamp = timestamp;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public String getMessage() {

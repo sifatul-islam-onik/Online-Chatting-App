@@ -63,6 +63,8 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
+                Toast.makeText(LoginActivity.this,"Logging in...",Toast.LENGTH_SHORT).show();
+
                 fauth.signInWithEmailAndPassword(Email,Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

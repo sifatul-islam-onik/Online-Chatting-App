@@ -9,6 +9,7 @@ public class ChatRoom {
     List<String>userIds;
     Timestamp lastMsgTime;
     String lastMsg;
+    String lastUrl;
     String lastMsgSenderId;
 
     public ChatRoom() {
@@ -19,6 +20,14 @@ public class ChatRoom {
         this.userIds = userIds;
         this.lastMsgTime = lastMsgTime;
         this.lastMsgSenderId = lastMsgSenderId;
+    }
+
+    public String getLastUrl() {
+        return lastUrl;
+    }
+
+    public void setLastUrl(String lastUrl) {
+        this.lastUrl = lastUrl;
     }
 
     public String getLastMsg() {

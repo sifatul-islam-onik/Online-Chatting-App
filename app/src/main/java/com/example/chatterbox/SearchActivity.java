@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -45,8 +47,7 @@ public class SearchActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent i = new Intent(SearchActivity.this, MainActivity.class);
-                startActivity(i);
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
 
@@ -89,5 +90,13 @@ public class SearchActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(adapter!=null) adapter.startListening();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(SearchActivity.this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
     }
 }

@@ -74,6 +74,9 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this,"Passwords doesn't match!",Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                Toast.makeText(SignupActivity.this,"Registering...",Toast.LENGTH_SHORT).show();
+
                 mAuth.createUserWithEmailAndPassword(Email, Password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -84,6 +87,7 @@ public class SignupActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
+                                                Toast.makeText(SignupActivity.this,"Login with your email and password!",Toast.LENGTH_SHORT).show();
                                                 Intent i = new Intent(SignupActivity.this, LoginActivity.class);
                                                 startActivity(i);
                                             }
@@ -114,7 +118,7 @@ public class SignupActivity extends AppCompatActivity {
                                         }
                                         catch (Exception e)
                                         {
-                                            Toast.makeText(SignupActivity.this, "Error!",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SignupActivity.this, "Error!" + e.getMessage(),Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 }
