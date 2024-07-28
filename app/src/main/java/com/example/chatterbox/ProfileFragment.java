@@ -1,6 +1,8 @@
 package com.example.chatterbox;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -31,7 +33,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
@@ -106,15 +111,11 @@ public class ProfileFragment extends Fragment {
 
         verify.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if(FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
-                    verifyLayout.setVisibility(View.GONE);
-                    return;
-                }
+            public void onClick (View view) {
                 FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(getActivity(),"Verification email sent to your email address!",Toast.LENGTH_LONG).show();
+                        openPromt();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -227,4 +228,30 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+
+    void openPromt(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Attention!");
+        builder.setIcon(R.drawable.icon_notification);
+        builder.setMessage("Verification email sent to your email address! You need to logout and login again to complete the verification process after email verification...");
+        builder.setCancelable(false);
+        builder.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent ii = new Intent(getActivity(), LoginActivity.class);
+                ii.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(ii);
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 }

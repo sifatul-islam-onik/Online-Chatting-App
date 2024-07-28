@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         chatFragment = new ChatFragment();
         profileFragment = new ProfileFragment();
         searchButton = findViewById(R.id.btnSearch);

@@ -1,6 +1,8 @@
 package com.example.chatterbox;
 
+import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -77,7 +79,11 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(adapter!=null) adapter.startListening();
+        recyclerView.getRecycledViewPool().clear();
+        if(adapter!=null){
+            adapter.notifyDataSetChanged();
+            adapter.startListening();
+        }
     }
 
     @Override
@@ -90,13 +96,5 @@ public class SearchActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(adapter!=null) adapter.startListening();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent i = new Intent(SearchActivity.this, MainActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
     }
 }

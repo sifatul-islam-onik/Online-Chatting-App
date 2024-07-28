@@ -1,5 +1,7 @@
 package com.example.chatterbox;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -34,6 +36,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
@@ -109,6 +112,10 @@ public class ChatActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
+                if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+                    openPromt();
+                    return;
+                }
                 String message = msg.getText().toString().trim();
                 if(message.isEmpty()) return;
                 sendMsg(message);
@@ -118,6 +125,10 @@ public class ChatActivity extends AppCompatActivity {
         photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+                    openPromt();
+                    return;
+                }
                 sendPhoto();
             }
         });
@@ -194,6 +205,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void sendPhoto(){
+        if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+            openPromt();
+            return;
+        }
         chatRoom.setLastMsgSenderId(FirebaseUtil.currentUserId());
         chatRoom.setLastMsgTime(Timestamp.now());
         chatRoom.setLastMsg("");
@@ -202,6 +217,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void sendMsg(String message) {
+        if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+            openPromt();
+            return;
+        }
         chatRoom.setLastMsgSenderId(FirebaseUtil.currentUserId());
         chatRoom.setLastMsg(message);
         chatRoom.setLastUrl("");
@@ -234,11 +253,21 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent i = new Intent(ChatActivity.this, MainActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
+    void openPromt(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+        builder.setTitle("Attention!");
+        builder.setIcon(R.drawable.icon_notification);
+        builder.setMessage("You need to verify your email address before you can message someone! Verify your account from profile section...");
+        builder.setCancelable(false);
+        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
+
 }

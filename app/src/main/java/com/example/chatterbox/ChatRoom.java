@@ -20,6 +20,8 @@ public class ChatRoom {
         this.userIds = userIds;
         this.lastMsgTime = lastMsgTime;
         this.lastMsgSenderId = lastMsgSenderId;
+        lastMsg = "";
+        lastUrl = "";
     }
 
     public String getLastUrl() {
