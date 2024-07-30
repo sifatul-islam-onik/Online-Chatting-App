@@ -1,5 +1,7 @@
 package com.example.chatterbox;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -69,7 +71,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finishAffinity();
-        finish();
+        openPromt();
+        return;
+    }
+
+    void openPromt(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Attention!");
+        builder.setIcon(R.drawable.icon_notification);
+        builder.setMessage("Do you want to Exit?");
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finishAffinity();
+                finish();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
