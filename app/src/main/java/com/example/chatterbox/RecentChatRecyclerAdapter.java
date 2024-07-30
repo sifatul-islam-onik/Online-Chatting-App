@@ -54,7 +54,7 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatRoom
                     }
                     holder.fullnameTxt.setText(otheruser.getName());
                     holder.lastmsgTime.setText(FirebaseUtil.timestampToString(model.getLastMsgTime()));
-                    FirebaseUtil.getStorageReference().child("users/"+otheruser.getUserId()+"/profile.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    FirebaseUtil.getStorageReference().child("userprofiles/"+otheruser.getUserId()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             Picasso.get().load(uri).into(holder.profilePic);

@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton searchButton,profileButton,chatButton;
     ChatFragment chatFragment;
     ProfileFragment profileFragment;
+    SettingsFragment settingsFragment;
     BottomNavigationView bottomNavigationView;
 
     @Override
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         });
         chatFragment = new ChatFragment();
         profileFragment = new ProfileFragment();
+        settingsFragment = new SettingsFragment();
         searchButton = findViewById(R.id.btnSearch);
         bottomNavigationView = findViewById(R.id.bottomBar);
 
@@ -45,10 +47,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 if(item.getItemId()==R.id.btnChat){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment,"chat_fragment").commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment).commit();
                 }
                 else if(item.getItemId()==R.id.btnProfile){
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame,profileFragment).commit();
+                }
+                else if(item.getItemId()==R.id.btnSettings){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,settingsFragment).commit();
                 }
                 return true;
             }
@@ -60,5 +65,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+        finish();
     }
 }

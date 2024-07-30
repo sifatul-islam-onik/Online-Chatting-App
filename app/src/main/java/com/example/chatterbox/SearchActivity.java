@@ -41,7 +41,7 @@ public class SearchActivity extends AppCompatActivity {
             return insets;
         });
 
-        btnBack = findViewById(R.id.btnBack);
+        btnBack = findViewById(R.id.btnSearchBack);
         btnSearch = findViewById(R.id.btnSearch2);
         txtUsername = findViewById(R.id.txtUsername);
         recyclerView = findViewById(R.id.recycler);

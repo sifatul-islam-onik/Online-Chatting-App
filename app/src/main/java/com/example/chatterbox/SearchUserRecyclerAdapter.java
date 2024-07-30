@@ -32,7 +32,7 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<User, Se
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
         holder.fullnameTxt.setText(model.getName());
-        FirebaseUtil.getStorageReference().child("users/"+model.getUserId()+"/profile.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        FirebaseUtil.getStorageReference().child("userprofiles/"+model.getUserId()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(holder.profilePic);

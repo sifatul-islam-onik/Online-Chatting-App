@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -36,6 +37,7 @@ public class SignupActivity extends AppCompatActivity {
 
     EditText name,email,username,pass,pass2;
     Button signup;
+    ImageButton cancel;
     FirebaseAuth mAuth;
 
     @Override
@@ -56,6 +58,7 @@ public class SignupActivity extends AppCompatActivity {
         pass = findViewById(R.id.txtPass);
         pass2 = findViewById(R.id.txtPass2);
         signup = findViewById(R.id.btnNew);
+        cancel = findViewById(R.id.btnSignUpBack);
         mAuth = FirebaseAuth.getInstance();
 
         signup.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +75,8 @@ public class SignupActivity extends AppCompatActivity {
                 }
                 if(!Password.equals(Password2)){
                     Toast.makeText(SignupActivity.this,"Passwords doesn't match!",Toast.LENGTH_SHORT).show();
+                    pass.getText().clear();
+                    pass2.getText().clear();
                     return;
                 }
 
@@ -92,39 +97,25 @@ public class SignupActivity extends AppCompatActivity {
                                                 startActivity(i);
                                             }
                                             else{
-                                                Toast.makeText(SignupActivity.this,"firestore error!",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SignupActivity.this,task.getException().getMessage().toString(),Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
                                 } else {
                                     {
-                                        try
-                                        {
-                                            throw task.getException();
-                                        }
-                                        // if user enters wrong email.
-                                        catch (FirebaseAuthWeakPasswordException weakPassword)
-                                        {
-                                            Toast.makeText(SignupActivity.this, "Weak password!",Toast.LENGTH_SHORT).show();
-                                        }
-                                        // if user enters wrong password.
-                                        catch (FirebaseAuthInvalidCredentialsException malformedEmail)
-                                        {
-                                            Toast.makeText(SignupActivity.this, "Wrong email format!",Toast.LENGTH_SHORT).show();
-                                        }
-                                        catch (FirebaseAuthUserCollisionException existEmail)
-                                        {
-                                            Toast.makeText(SignupActivity.this, "Email already iin use!",Toast.LENGTH_SHORT).show();
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Toast.makeText(SignupActivity.this, "Error!" + e.getMessage(),Toast.LENGTH_SHORT).show();
-                                        }
+                                        Toast.makeText(SignupActivity.this,task.getException().getMessage().toString(),Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }
                         });
 
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
 

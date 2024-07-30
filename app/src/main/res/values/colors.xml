@@ -6,4 +6,5 @@
     <color name="background">#e7d7f5</color>
     <color name="sender">#2196F3</color>
     <color name="receiver">#D5D2D2</color>
+    <color name="grey">#D5D2D2</color>
 </resources>

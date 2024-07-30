@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".UpdateProfileActivity">
+
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="false"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="-16dp">
+
+        <ImageButton
+            android:id="@+id/btnUpdateBack"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/splashback"
+            android:contentDescription="back"
+            app:srcCompat="@drawable/icon_back" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/splashback"
+            android:drawableLeft="@drawable/logosmall"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/black"
+            android:fontFamily="monospace"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/icon_refresh"
+        android:drawablePadding="10dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:padding="10dp"
+        android:text="Update Info"
+        android:textColor="@color/black"
+        android:textSize="28sp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:elevation="5dp"
+        android:gravity="center">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/updateProfilePicImg"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/icon_person"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="2dp" />
+
+        <ImageButton
+            android:id="@+id/editpicBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="120dp"
+            android:layout_marginTop="90dp"
+            android:background="@null"
+            android:contentDescription="edit"
+            android:src="@drawable/icon_edit_pic" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/updateProfilenameTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/text_rounded_corner"
+        android:drawableRight="@drawable/icon_editable"
+        android:ems="10"
+        android:inputType="text"
+        android:padding="15dp"
+        android:text="Name"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/updateProfileusernameTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/text_rounded_corner"
+        android:drawableRight="@drawable/icon_editable"
+        android:ems="10"
+        android:inputType="text"
+        android:padding="15dp"
+        android:text="Username"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/profileupdateBtn"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:padding="15dp"
+        android:text="Update Profile"
+        android:textSize="14sp"
+        app:cornerRadius="10dp" />
+
+</LinearLayout>

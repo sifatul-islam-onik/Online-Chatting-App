@@ -10,10 +10,10 @@
 
     <include
         layout="@layout/profile_pic"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
-        android:layout_margin="10dp" />
+        android:layout_margin="5dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

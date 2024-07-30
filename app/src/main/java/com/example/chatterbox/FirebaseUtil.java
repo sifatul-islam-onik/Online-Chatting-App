@@ -22,7 +22,7 @@ public class FirebaseUtil {
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
     }
 
-    public static void logout(){
+    public static void logOut(){
         FirebaseAuth.getInstance().signOut();
     }
 
@@ -62,15 +62,13 @@ public class FirebaseUtil {
     public static String timestampToString(Timestamp timestamp){
         return new SimpleDateFormat("HH:mm").format(timestamp.toDate());
     }
-    public static void logOut(){
-        FirebaseAuth.getInstance().signOut();
-    }
 
     public static String getProfilePicPath(){
-        return "users/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/profile.jpg";
+        return "userprofiles/" + FirebaseUtil.currentUserId() + ".jpg";
     }
 
     public static StorageReference getStorageReference(){
         return FirebaseStorage.getInstance().getReference();
     }
+
 }

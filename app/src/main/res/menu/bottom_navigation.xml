@@ -5,9 +5,16 @@
     <item
         android:id="@+id/btnChat"
         android:icon="@drawable/icon_chat"
+        android:iconTint="@color/black"
         android:title="Chats" />
     <item
         android:id="@+id/btnProfile"
         android:icon="@drawable/icon_person"
+        android:iconTint="@color/black"
         android:title="Profile" />
+    <item
+        android:id="@+id/btnSettings"
+        android:icon="@drawable/icon_settings"
+        android:iconTint="@color/black"
+        android:title="Settings" />
 </menu>

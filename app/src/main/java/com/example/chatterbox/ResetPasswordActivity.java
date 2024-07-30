@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -23,7 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ResetPasswordActivity extends AppCompatActivity {
 
     EditText resetemail;
-    Button sendreset,cancelreset;
+    Button sendreset;
+    ImageButton cancelreset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         resetemail = findViewById(R.id.resetemailTxt);
         sendreset = findViewById(R.id.sendresetBtn);
-        cancelreset = findViewById(R.id.resetcancelBtn);
+        cancelreset = findViewById(R.id.btnResetBack);
 
         sendreset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +57,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ResetPasswordActivity.this,"Error! " + e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ResetPasswordActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -64,9 +66,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         cancelreset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ResetPasswordActivity.this, LoginActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
     }

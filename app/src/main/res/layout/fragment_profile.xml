@@ -1,162 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:gravity="center"
 
 
     android:orientation="vertical"
     tools:context=".ProfileFragment">
 
     <LinearLayout
-        android:id="@+id/verificationLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/verifyTxt"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="Your Profile"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="197dp" />
+
+        <LinearLayout
+            android:id="@+id/verificationLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="10dp"
-            android:text="Your email is not verified yet!"
-            android:textColor="@android:color/holo_red_light"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/verifyBtn"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/verifyTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Your email is not verified yet!"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/verifyBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:padding="10dp"
+                android:text="Verify Now"
+                app:cornerRadius="5dp" />
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ProfilePicImg"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/icon_person"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="2dp" />
+
+        <TextView
+            android:id="@+id/ProfilenameTxt"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:padding="10dp"
-            android:text="Verify Now"
-            app:cornerRadius="5dp" />
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:elevation="5dp"
-        android:gravity="center">
-
-        <ImageView
-            android:id="@+id/profilepicImg"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_marginBottom="10dp"
-            android:backgroundTint="@color/splashback"
-            android:scaleType="fitXY"
-            android:src="@drawable/icon_person" />
+            android:background="@drawable/text_rounded_corner"
+            android:ems="10"
+            android:padding="15dp"
+            android:text="Name"
+            android:textSize="18sp" />
 
-        <ImageButton
-            android:id="@+id/editpicBtn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginLeft="90dp"
-            android:layout_marginTop="70dp"
-            android:background="@null"
-            android:contentDescription="edit"
-            android:src="@drawable/icon_edit_pic" />
-    </RelativeLayout>
-
-    <EditText
-        android:id="@+id/profilenameTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/text_rounded_corner"
-        android:drawableRight="@drawable/icon_editable"
-        android:ems="10"
-        android:inputType="text"
-        android:padding="15dp"
-        android:text="Name"
-        android:textSize="18sp" />
-
-    <EditText
-        android:id="@+id/profileusernameTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/text_rounded_corner"
-        android:drawableRight="@drawable/icon_editable"
-        android:ems="10"
-        android:inputType="text"
-        android:padding="15dp"
-        android:text="Username"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/profileemailTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/text_rounded_corner"
-        android:ems="10"
-        android:padding="15dp"
-        android:text="Email"
-        android:textSize="18sp" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/profileupdateBtn"
-            android:layout_width="150dp"
+        <TextView
+            android:id="@+id/ProfileusernameTxt"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:padding="10dp"
-            android:text="Update Profile"
-            android:textSize="14sp"
-            app:cornerRadius="10dp" />
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/text_rounded_corner"
+            android:ems="10"
+            android:padding="15dp"
+            android:text="Username"
+            android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/cngPass"
-            android:layout_width="150dp"
+        <TextView
+            android:id="@+id/profileEmailTxt"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:padding="10dp"
-            android:text="Change Password"
-            android:textSize="14sp"
-            app:cornerRadius="10dp" />
-
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/text_rounded_corner"
+            android:ems="10"
+            android:padding="15dp"
+            android:text="Email"
+            android:textSize="18sp" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/profilelogoutBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="#FD0000"
-        android:drawableRight="@drawable/icon_logout"
-        android:drawablePadding="5dp"
-        android:drawableTint="@color/white"
-        android:padding="10dp"
-        android:text="Logout"
-        android:textSize="14sp"
-        app:cornerRadius="10dp" />
-
-</LinearLayout>
+</FrameLayout>

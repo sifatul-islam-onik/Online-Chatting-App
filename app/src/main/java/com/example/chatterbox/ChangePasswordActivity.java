@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -25,7 +26,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class ChangePasswordActivity extends AppCompatActivity {
 
     EditText oldpass,newpass,newpass2;
-    Button change,cancel;
+    Button change;
+    ImageButton cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         newpass = findViewById(R.id.txtNewPass);
         newpass2 = findViewById(R.id.txtNewPass2);
         change = findViewById(R.id.btnChangePass);
-        cancel = findViewById(R.id.btnCancel);
+        cancel = findViewById(R.id.btnChangePassBack);
 
         change.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +53,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 oldpassword = oldpass.getText().toString();
                 newpassword = newpass.getText().toString();
                 newpassword2 = newpass2.getText().toString();
+                if(oldpassword.isEmpty() || newpassword.isEmpty() || newpassword2.isEmpty()){
+                    Toast.makeText(ChangePasswordActivity.this,"Required fields are empty!",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(!newpassword.equals(newpassword2)){
                     Toast.makeText(ChangePasswordActivity.this,"Passwords doesn't match!",Toast.LENGTH_SHORT).show();
                     newpass.getText().clear();
@@ -69,19 +75,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
                                         Toast.makeText(ChangePasswordActivity.this,"Password Changed!",Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent(ChangePasswordActivity.this, MainActivity.class);
-                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(i);
                                     }
                                     else{
-                                        Toast.makeText(ChangePasswordActivity.this,"Password Changing Failed!",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ChangePasswordActivity.this,task.getException().getMessage().toString(),Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
                         }
                         else{
                             oldpass.getText().clear();
-                            Toast.makeText(ChangePasswordActivity.this,"Authentication Failed!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChangePasswordActivity.this,task.getException().getMessage().toString(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -91,9 +94,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ChangePasswordActivity.this, MainActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
+                getOnBackPressedDispatcher().onBackPressed();
             }
         });
     }

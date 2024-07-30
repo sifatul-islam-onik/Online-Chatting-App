@@ -90,7 +90,7 @@ public class ChatActivity extends AppCompatActivity {
         username.setText(otherUser.getUsername());
         fullname.setText(otherUser.getName());
 
-        FirebaseUtil.getStorageReference().child("users/"+otherUser.getUserId()+"/profile.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        FirebaseUtil.getStorageReference().child("usersprofiles/"+otherUser.getUserId()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(profilePic);
@@ -175,11 +175,11 @@ public class ChatActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ChatActivity.this,"Upload failed! " + e.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChatActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
                         }
                     });
                 }catch(Exception e){
-                    Toast.makeText(ChatActivity.this,"No image selected!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChatActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -257,7 +257,7 @@ public class ChatActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
         builder.setTitle("Attention!");
         builder.setIcon(R.drawable.icon_notification);
-        builder.setMessage("You need to verify your email address before you can message someone! Verify your account from profile section...");
+        builder.setMessage(R.string.verify_email);
         builder.setCancelable(false);
         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             @Override
