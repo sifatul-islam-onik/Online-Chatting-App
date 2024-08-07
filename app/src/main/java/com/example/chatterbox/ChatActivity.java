@@ -90,7 +90,7 @@ public class ChatActivity extends AppCompatActivity {
         username.setText(otherUser.getUsername());
         fullname.setText(otherUser.getName());
 
-        FirebaseUtil.getStorageReference().child("usersprofiles/"+otherUser.getUserId()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        FirebaseUtil.getStorageReference().child("userprofiles/"+otherUser.getUserId()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(profilePic);
