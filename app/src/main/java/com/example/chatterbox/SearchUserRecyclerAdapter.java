@@ -47,7 +47,7 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<User, Se
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(context, ChatActivity.class);
+                Intent i = new Intent(context, OtherProfileActivity.class);
                 i.putExtra("name",model.getName());
                 i.putExtra("email",model.getEmail());
                 i.putExtra("username",model.getUsername());

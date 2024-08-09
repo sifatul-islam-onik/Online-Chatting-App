@@ -32,7 +32,7 @@ public class ProfileFragment extends Fragment {
 
     ImageView profilepic;
     TextView name,username,email;
-    Button verify;
+    Button verify,posts;
     User user;
     LinearLayout verifyLayout;
 
@@ -51,6 +51,7 @@ public class ProfileFragment extends Fragment {
         username = view.findViewById(R.id.ProfileusernameTxt);
         email = view.findViewById(R.id.profileEmailTxt);
         verify = view.findViewById(R.id.verifyBtn);
+        posts = view.findViewById(R.id.btnProfilePost);
         verifyLayout = view.findViewById(R.id.verificationLayout);
 
         getUserData();
@@ -73,6 +74,16 @@ public class ProfileFragment extends Fragment {
                         Toast.makeText(getActivity(),"Action failed! "+ e.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 });
+            }
+        });
+
+        posts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i2 = new Intent(getActivity(), PostActivity.class);
+                i2.putExtra("userid",user.getUserId());
+                i2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i2);
             }
         });
 

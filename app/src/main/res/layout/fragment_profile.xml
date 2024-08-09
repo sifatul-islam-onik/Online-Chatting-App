@@ -23,7 +23,7 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:padding="15dp"
-            android:text="Your Profile"
+            android:text="My Profile"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -110,5 +110,16 @@
             android:padding="15dp"
             android:text="Email"
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btnProfilePost"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:padding="13dp"
+            android:text="My Posts"
+            app:cornerRadius="5dp" />
     </LinearLayout>
 </FrameLayout>

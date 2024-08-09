@@ -103,7 +103,22 @@ public class DeleteUserActivity extends AppCompatActivity {
                                 }
                             });
 
+                            FirebaseUtil.allPostsCollectionReference().whereEqualTo("userid",FirebaseUtil.currentUserId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    for(QueryDocumentSnapshot snap:queryDocumentSnapshots){
+                                        Post post = snap.toObject(Post.class);
+                                        if(!post.getImgUrl().isEmpty()){
+                                            FirebaseUtil.getStorageReference().child(post.getImgUrl()).delete();
+                                        }
+                                        snap.getReference().delete();
+                                    }
+                                }
+                            });
+
                             FirebaseUtil.getStorageReference().child(FirebaseUtil.getProfilePicPath()).delete();
+
+
 
 
                             user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {

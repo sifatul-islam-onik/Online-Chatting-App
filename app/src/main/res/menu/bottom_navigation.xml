@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/btnHome"
+        android:icon="@drawable/icon_home"
+        android:iconTint="@color/black"
+        android:title="Home" />
+    <item
         android:id="@+id/btnChat"
         android:icon="@drawable/icon_chat"
         android:iconTint="@color/black"

@@ -21,7 +21,8 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageButton searchButton,profileButton,chatButton;
+    ImageButton searchButton;
+    HomeFragment homeFragment;
     ChatFragment chatFragment;
     ProfileFragment profileFragment;
     SettingsFragment settingsFragment;
@@ -37,13 +38,14 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        homeFragment = new HomeFragment();
         chatFragment = new ChatFragment();
         profileFragment = new ProfileFragment();
         settingsFragment = new SettingsFragment();
         searchButton = findViewById(R.id.btnSearch);
         bottomNavigationView = findViewById(R.id.bottomBar);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame,chatFragment,"chat_fragment").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame,homeFragment).commit();
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -56,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(item.getItemId()==R.id.btnSettings){
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame,settingsFragment).commit();
+                }
+                else if(item.getItemId()==R.id.btnHome){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame,homeFragment).commit();
                 }
                 return true;
             }
