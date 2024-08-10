@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment {
     }
 
     void setupView(){
-        Query query = FirebaseUtil.allPostsCollectionReference().whereNotEqualTo("userid",FirebaseUtil.currentUserId()).orderBy("timestamp", Query.Direction.DESCENDING);
+        Query query = FirebaseUtil.allPostsCollectionReference().orderBy("timestamp", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<Post> options = new FirestoreRecyclerOptions.Builder<Post>().setQuery(query,Post.class).build();
         adapter = new PostRecyclerAdapter(options,getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

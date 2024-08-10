@@ -21,6 +21,19 @@
             android:textSize="18sp"
             app:cornerRadius="2dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:drawableLeft="@drawable/icon_refresh"
+            android:drawablePadding="5dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Recent Posts"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerHome"
             android:layout_width="match_parent"

@@ -22,6 +22,10 @@ public class FirebaseUtil {
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
     }
 
+    public static DocumentReference getUser(String id){
+        return FirebaseFirestore.getInstance().collection("users").document(id);
+    }
+
     public static void logOut(){
         FirebaseAuth.getInstance().signOut();
     }

@@ -74,13 +74,14 @@
         android:textColor="@color/black"
         android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/btnCreatePost"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:text="Post"
-        app:cornerRadius="2dp" />
+    <ImageView
+        android:id="@+id/createphoto"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/icon_photo" />
 
     <Button
         android:id="@+id/btnCreatePhoto"
@@ -88,7 +89,16 @@
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:text="Post Photo"
+        android:text="Add Photo"
+        app:cornerRadius="2dp" />
+
+    <Button
+        android:id="@+id/btnCreatePost"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Post"
         app:cornerRadius="2dp" />
 
 </LinearLayout>

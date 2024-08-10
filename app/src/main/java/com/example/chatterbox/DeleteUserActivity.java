@@ -118,9 +118,6 @@ public class DeleteUserActivity extends AppCompatActivity {
 
                             FirebaseUtil.getStorageReference().child(FirebaseUtil.getProfilePicPath()).delete();
 
-
-
-
                             user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {

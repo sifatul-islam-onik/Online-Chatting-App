@@ -16,10 +16,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
 public class OtherProfileActivity extends AppCompatActivity {
 
+    User user;
     TextView name,email,username;
     ImageView propic;
     Button msg,post;
@@ -46,15 +48,22 @@ public class OtherProfileActivity extends AppCompatActivity {
 
         Intent i = getIntent();
 
+        FirebaseUtil.getUser(i.getStringExtra("userid")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                user = documentSnapshot.toObject(User.class);
+                username.setText(user.getUsername());
+                name.setText(user.getName());
+                email.setText(user.getEmail());
+            }
+        });
+
         FirebaseUtil.getStorageReference().child("userprofiles/"+i.getStringExtra("userid")+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(propic);
             }
         });
-        username.setText(i.getStringExtra("username"));
-        name.setText(i.getStringExtra("name"));
-        email.setText(i.getStringExtra("email"));
 
         msg.setOnClickListener(new View.OnClickListener() {
             @Override

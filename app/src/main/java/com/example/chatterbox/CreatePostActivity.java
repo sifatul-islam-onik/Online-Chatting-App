@@ -42,9 +42,12 @@ public class CreatePostActivity extends AppCompatActivity {
     Post post;
     String time;
     ImageButton back;
+    ImageView photo;
     EditText posttxt;
     Button addPic,btnpost;
     ActivityResultLauncher<Intent> pickImage;
+    Boolean flag;
+    Uri image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +60,14 @@ public class CreatePostActivity extends AppCompatActivity {
             return insets;
         });
 
-        time = "";
+        time = "";flag = false;
         back = findViewById(R.id.btnCreatePostBack);
         posttxt = findViewById(R.id.txtcreatePost);
         addPic = findViewById(R.id.btnCreatePhoto);
         btnpost = findViewById(R.id.btnCreatePost);
+        photo = findViewById(R.id.createphoto);
+        photo.setVisibility(View.GONE);
+
         FirebaseUtil.currentUser().get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -88,33 +94,15 @@ public class CreatePostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String text = posttxt.getText().toString();
-                if(text.isEmpty()){
+                if(text.isEmpty() && !flag){
                     return;
                 }
                 time = Timestamp.now().toString();
-                post = new Post(text,"", user.getName(), user.getUsername(), user.getUserId(), time);
-                FirebaseUtil.allPostsCollectionReference().add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(CreatePostActivity.this,"Post Uploaded...",Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(CreatePostActivity.this,MainActivity.class));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(CreatePostActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+                post = new Post(user.getName(), user.getUsername(), user.getUserId(), time);
 
-        pickImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult o) {
-                try{
-                    Toast.makeText(CreatePostActivity.this,"Uploading Image...",Toast.LENGTH_SHORT).show();
-
-                    Uri image = o.getData().getData();
+                if(!text.isEmpty()) post.setText(text);
+                if(flag){
+                    post.setImgUrl("postPics/"+user.getUserId()+time+".jpg");
                     Bitmap bitmap = null;
                     if (Build.VERSION.SDK_INT >= 29) {
                         ImageDecoder.Source source = ImageDecoder.createSource(CreatePostActivity.this.getContentResolver(), image);
@@ -133,32 +121,40 @@ public class CreatePostActivity extends AppCompatActivity {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG,25,baos);
                     byte[] data = baos.toByteArray();
-
-                    time = Timestamp.now().toString();
-                    post = new Post("","postPics/"+user.getUserId()+"/"+time+".jpg",user.getName(),user.getUsername(),user.getUserId(),time);
-
-                    FirebaseUtil.getStorageReference().child(post.getImgUrl()).putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            FirebaseUtil.allPostsCollectionReference().add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Toast.makeText(CreatePostActivity.this,"Post Uploaded...",Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(CreatePostActivity.this,MainActivity.class));
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(CreatePostActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
+                    FirebaseUtil.getStorageReference().child(post.getImgUrl()).putBytes(data).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(CreatePostActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
                         }
                     });
+                }
+
+                FirebaseUtil.allPostsCollectionReference().add(post).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(CreatePostActivity.this,"Post Uploaded...",Toast.LENGTH_SHORT).show();
+                        post.setPostid(documentReference.getId());
+                        documentReference.set(post);
+                        startActivity(new Intent(CreatePostActivity.this,MainActivity.class));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(CreatePostActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        pickImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult o) {
+                try{
+                    Toast.makeText(CreatePostActivity.this,"Uploading Image...",Toast.LENGTH_SHORT).show();
+                    flag = true;
+                    photo.setVisibility(View.VISIBLE);
+                    image = o.getData().getData();
+                    photo.setImageURI(image);
 
                 }catch(Exception e){
                     Toast.makeText(CreatePostActivity.this,e.getMessage().toString(),Toast.LENGTH_SHORT).show();

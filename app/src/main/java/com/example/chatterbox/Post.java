@@ -3,18 +3,18 @@ package com.example.chatterbox;
 import com.google.firebase.Timestamp;
 
 public class Post {
-    String text,imgUrl,name,username,userid,timestamp;
+    String name,username,text,imgUrl,postid,userid,timestamp;
 
     public Post() {
     }
 
-    public Post(String text, String imgUrl, String name, String username, String userid, String timestamp) {
-        this.text = text;
-        this.imgUrl = imgUrl;
-        this.name = name;
-        this.username = username;
+    public Post(String name,String username, String userid, String timestamp) {
+        this.text = "";
+        this.imgUrl = "";
         this.userid = userid;
         this.timestamp = timestamp;
+        this.name = name;
+        this.username = username;
     }
 
     public String getName() {
@@ -31,6 +31,14 @@ public class Post {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPostid() {
+        return postid;
+    }
+
+    public void setPostid(String postid) {
+        this.postid = postid;
     }
 
     public String getTimestamp() {
