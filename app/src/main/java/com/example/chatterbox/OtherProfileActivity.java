@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,10 +52,9 @@ public class OtherProfileActivity extends AppCompatActivity {
         FirebaseUtil.getUser(i.getStringExtra("userid")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user = documentSnapshot.toObject(User.class);
-                username.setText(user.getUsername());
-                name.setText(user.getName());
-                email.setText(user.getEmail());
+                username.setText(documentSnapshot.getString("username"));
+                name.setText(documentSnapshot.getString("name"));
+                email.setText(documentSnapshot.getString("email"));
             }
         });
 
@@ -94,4 +94,5 @@ public class OtherProfileActivity extends AppCompatActivity {
         });
 
     }
+
 }

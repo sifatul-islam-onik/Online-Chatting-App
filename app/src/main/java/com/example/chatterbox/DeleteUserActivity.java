@@ -80,20 +80,11 @@ public class DeleteUserActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                     for(QueryDocumentSnapshot doc:queryDocumentSnapshots){
-                                        doc.getReference().collection("chats").whereNotEqualTo("photoUrl","").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        doc.getReference().collection("chats").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                             @Override
                                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                                 for(QueryDocumentSnapshot chat:queryDocumentSnapshots){
-                                                    ChatMessage chatMessage = chat.toObject(ChatMessage.class);
-                                                    FirebaseUtil.getStorageReference().child(chatMessage.getPhotoUrl()).delete();
-                                                    chat.getReference().delete();
-                                                }
-                                            }
-                                        });
-                                        doc.getReference().collection("chats").whereEqualTo("photoUrl","").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                for(QueryDocumentSnapshot chat:queryDocumentSnapshots){
+                                                    if(!chat.getString("photoUrl").isEmpty()) FirebaseUtil.getStorageReference().child(chat.getString("photoUrl")).delete();
                                                     chat.getReference().delete();
                                                 }
                                             }

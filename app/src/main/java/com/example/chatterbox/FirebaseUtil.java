@@ -68,7 +68,7 @@ public class FirebaseUtil {
     }
 
     public static String timestampToString(Timestamp timestamp){
-        return new SimpleDateFormat("HH:mm").format(timestamp.toDate());
+        return new SimpleDateFormat("dd-MM-yy (HH:mm)").format(timestamp.toDate());
     }
 
     public static String getProfilePicPath(){

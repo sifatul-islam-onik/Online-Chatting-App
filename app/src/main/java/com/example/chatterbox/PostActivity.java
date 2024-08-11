@@ -64,11 +64,7 @@ public class PostActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        recyclerView.getRecycledViewPool().clear();
-        if(adapter!=null){
-            adapter.notifyDataSetChanged();
-            adapter.startListening();
-        }
+        if(adapter!=null) adapter.startListening();
     }
 
     @Override
@@ -80,6 +76,6 @@ public class PostActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(adapter!=null) adapter.startListening();
+        if(adapter!=null) adapter.notifyDataSetChanged();
     }
 }

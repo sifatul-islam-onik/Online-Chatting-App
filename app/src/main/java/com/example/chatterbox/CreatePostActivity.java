@@ -97,8 +97,9 @@ public class CreatePostActivity extends AppCompatActivity {
                 if(text.isEmpty() && !flag){
                     return;
                 }
-                time = Timestamp.now().toString();
-                post = new Post(user.getName(), user.getUsername(), user.getUserId(), time);
+                Timestamp timex = Timestamp.now();
+                time = timex.toString();
+                post = new Post(user.getName(), user.getUsername(), user.getUserId(), timex);
 
                 if(!text.isEmpty()) post.setText(text);
                 if(flag){
@@ -150,7 +151,6 @@ public class CreatePostActivity extends AppCompatActivity {
             @Override
             public void onActivityResult(ActivityResult o) {
                 try{
-                    Toast.makeText(CreatePostActivity.this,"Uploading Image...",Toast.LENGTH_SHORT).show();
                     flag = true;
                     photo.setVisibility(View.VISIBLE);
                     image = o.getData().getData();
