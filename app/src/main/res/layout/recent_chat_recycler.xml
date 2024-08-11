@@ -12,8 +12,7 @@
         layout="@layout/profile_pic"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:layout_margin="10dp" />
+        android:layout_gravity="center" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +28,9 @@
                 android:id="@+id/fullNameTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="Name" />
@@ -38,9 +39,10 @@
                 android:id="@+id/lastMsgtimeTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10dp"
+                android:layout_below="@id/fullNameTxt"
+                android:layout_centerVertical="true"
                 android:textColor="@color/black"
+                android:textSize="12sp"
                 tools:text="10:00" />
         </RelativeLayout>
 
@@ -48,7 +50,7 @@
             android:id="@+id/lastMsgTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
             android:textColor="@color/black"
             tools:text="Last Message" />
     </LinearLayout>

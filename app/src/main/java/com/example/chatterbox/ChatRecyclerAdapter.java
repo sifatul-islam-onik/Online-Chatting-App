@@ -34,8 +34,11 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessage, C
     protected void onBindViewHolder(@NonNull ChatViewHolder holder, int position, @NonNull ChatMessage model) {
         if(model.getSenderId().equals(FirebaseUtil.currentUserId())){
             holder.leftChat.setVisibility(GONE);
+            holder.lefttime.setVisibility(GONE);
             holder.rightChat.setVisibility(View.VISIBLE);
+            holder.righttime.setVisibility(View.VISIBLE);
             holder.rightmsg.setText(model.getMessage());
+            holder.righttime.setText(FirebaseUtil.timestampToString(model.getTimestamp()));
             if(model.getPhotoUrl().isEmpty()){
                 holder.rightphoto.setVisibility(GONE);
                 holder.rightmsg.setVisibility(View.VISIBLE);
@@ -53,8 +56,11 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessage, C
         }
         else{
             holder.leftChat.setVisibility(View.VISIBLE);
+            holder.lefttime.setVisibility(View.VISIBLE);
             holder.rightChat.setVisibility(GONE);
+            holder.righttime.setVisibility(GONE);
             holder.leftmsg.setText(model.getMessage());
+            holder.lefttime.setText(FirebaseUtil.timestampToString(model.getTimestamp()));
             if(model.getPhotoUrl().isEmpty()){
                 holder.leftphoto.setVisibility(GONE);
                 holder.leftmsg.setVisibility(View.VISIBLE);
@@ -82,7 +88,7 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessage, C
     class ChatViewHolder extends RecyclerView.ViewHolder{
 
         LinearLayout leftChat,rightChat;
-        TextView leftmsg,rightmsg;
+        TextView leftmsg,rightmsg,lefttime,righttime;
         ImageView leftphoto,rightphoto;
 
         public ChatViewHolder(@NonNull View itemView) {
@@ -94,6 +100,8 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessage, C
             rightmsg = itemView.findViewById(R.id.myTxt);
             leftphoto = itemView.findViewById(R.id.otherPhoto);
             rightphoto = itemView.findViewById(R.id.myPhoto);
+            lefttime = itemView.findViewById(R.id.txtOtherTime);
+            righttime = itemView.findViewById(R.id.txtMyTime);
         }
     }
 }
