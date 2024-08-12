@@ -14,7 +14,7 @@
     <string name="credits">Developed by 2107016</string>
     <string name="delete">You are about to delete your ChatterBox account permanantly!Once you delete your account you won\'t be able to recover it anymore.\n\nAre you confirm?</string>
     <string name="change_email">Verification email sent to your new email address! You need to verify your new email address and re-login into your account for the changes to take effect...</string>
-    <string name="verify_email">You need to verify your email address before you can message someone! Please verify your account from profile section...</string>
+    <string name="verify_email">You need to verify your email address before you can message or post! Please verify your account from profile section...</string>
     <string name="verified_email">Verification email sent to your email address! You need to verify your email address and re-login into your account for the changes to take effect...</string>
     <string name="about">Hi , I\'m Md Sifatul Islam. A student of Computer Science and Engineering from Bangladesh.</string>
     <string name="email">sifatul.islam.onik@gmail.com</string>

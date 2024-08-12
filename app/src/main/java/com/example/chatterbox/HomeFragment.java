@@ -1,5 +1,7 @@
 package com.example.chatterbox;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.Query;
 
 public class HomeFragment extends Fragment {
@@ -36,6 +39,10 @@ public class HomeFragment extends Fragment {
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+                    openPromt();
+                    return;
+                }
                 Intent i = new Intent(getActivity(), CreatePostActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
@@ -70,5 +77,22 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(adapter!=null) adapter.notifyDataSetChanged();
+    }
+
+    void openPromt(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Attention!");
+        builder.setIcon(R.drawable.icon_notification);
+        builder.setMessage(R.string.verify_email);
+        builder.setCancelable(false);
+        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }
