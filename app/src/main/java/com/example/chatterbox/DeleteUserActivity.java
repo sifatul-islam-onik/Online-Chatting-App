@@ -28,6 +28,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.List;
+
 public class DeleteUserActivity extends AppCompatActivity {
 
     EditText confirm,pass;
@@ -94,7 +96,21 @@ public class DeleteUserActivity extends AppCompatActivity {
                                 }
                             });
 
-                            FirebaseUtil.allPostsCollectionReference().whereEqualTo("userid",FirebaseUtil.currentUserId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            FirebaseUtil.allPostsCollectionReference().whereArrayContains("likeids",user.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    for(QueryDocumentSnapshot snap:queryDocumentSnapshots){
+                                        Post post = snap.toObject(Post.class);
+                                        List<String>l = post.getLikeids();
+                                        l.remove(user.getUid());
+                                        post.setLikeids(l);
+                                        post.setLike(post.getLike()-1);
+                                        FirebaseUtil.allPostsCollectionReference().document(post.getPostid()).set(post);
+                                    }
+                                }
+                            });
+
+                            FirebaseUtil.allPostsCollectionReference().whereEqualTo("userid",user.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                     for(QueryDocumentSnapshot snap:queryDocumentSnapshots){
