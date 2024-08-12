@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -65,10 +66,10 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String Name = name.getText().toString();
-                String Email = email.getText().toString();
+                String Email = email.getText().toString().trim();
                 String Password = pass.getText().toString();
                 String Password2 = pass2.getText().toString();
-                String Username = username.getText().toString();
+                String Username = username.getText().toString().trim();
                 if(TextUtils.isEmpty(Name) || TextUtils.isEmpty(Email) || TextUtils.isEmpty(Password)){
                     Toast.makeText(SignupActivity.this,"Required fields are empty!",Toast.LENGTH_SHORT).show();
                     return;
@@ -80,34 +81,42 @@ public class SignupActivity extends AppCompatActivity {
                     return;
                 }
 
-                Toast.makeText(SignupActivity.this,"Registering...",Toast.LENGTH_SHORT).show();
+                FirebaseUtil.allUsersCollectionReference().whereEqualTo("username",Username).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(!queryDocumentSnapshots.isEmpty()){
+                            Toast.makeText(SignupActivity.this,"Username already exists!",Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(SignupActivity.this,"Registering...",Toast.LENGTH_SHORT).show();
 
-                mAuth.createUserWithEmailAndPassword(Email, Password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    User user = new User(Email,Name, Username,Timestamp.now(),FirebaseUtil.currentUserId());
-                                    FirebaseUtil.currentUser().set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                Toast.makeText(SignupActivity.this,"Login with your email and password!",Toast.LENGTH_SHORT).show();
-                                                Intent i = new Intent(SignupActivity.this, LoginActivity.class);
-                                                startActivity(i);
+                            mAuth.createUserWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        User user = new User(Email,Name, Username,Timestamp.now(),FirebaseUtil.currentUserId());
+                                        FirebaseUtil.currentUser().set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    Toast.makeText(SignupActivity.this,"Login with your email and password!",Toast.LENGTH_SHORT).show();
+                                                    Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+                                                    startActivity(i);
+                                                }
+                                                else{
+                                                    Toast.makeText(SignupActivity.this,task.getException().getMessage().toString(),Toast.LENGTH_SHORT).show();
+                                                }
                                             }
-                                            else{
-                                                Toast.makeText(SignupActivity.this,task.getException().getMessage().toString(),Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    {
+                                        });
+                                    }
+                                    else {
                                         Toast.makeText(SignupActivity.this,task.getException().getMessage().toString(),Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                            }
-                        });
+                            });
+                        }
+                    }
+                });
 
             }
         });
