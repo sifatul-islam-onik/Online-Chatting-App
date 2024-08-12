@@ -75,10 +75,9 @@ public class DeleteUserActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
+                            FirebaseUtil.allUsersCollectionReference().document(user.getUid()).delete();
 
-                            FirebaseUtil.allUsersCollectionReference().document(FirebaseUtil.currentUserId()).delete();
-
-                            FirebaseUtil.allChatRoomCollectionReference().whereArrayContains("userIds",FirebaseUtil.currentUserId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            FirebaseUtil.allChatRoomCollectionReference().whereArrayContains("userIds",user.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                 @Override
                                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                     for(QueryDocumentSnapshot doc:queryDocumentSnapshots){
@@ -107,19 +106,18 @@ public class DeleteUserActivity extends AppCompatActivity {
                                         post.setLike(post.getLike()-1);
                                         FirebaseUtil.allPostsCollectionReference().document(post.getPostid()).set(post);
                                     }
-                                }
-                            });
-
-                            FirebaseUtil.allPostsCollectionReference().whereEqualTo("userid",user.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                @Override
-                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                    for(QueryDocumentSnapshot snap:queryDocumentSnapshots){
-                                        Post post = snap.toObject(Post.class);
-                                        if(!post.getImgUrl().isEmpty()){
-                                            FirebaseUtil.getStorageReference().child(post.getImgUrl()).delete();
+                                    FirebaseUtil.allPostsCollectionReference().whereEqualTo("userid",user.getUid()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            for(QueryDocumentSnapshot snap:queryDocumentSnapshots){
+                                                Post post = snap.toObject(Post.class);
+                                                if(!post.getImgUrl().isEmpty()){
+                                                    FirebaseUtil.getStorageReference().child(post.getImgUrl()).delete();
+                                                }
+                                                snap.getReference().delete();
+                                            }
                                         }
-                                        snap.getReference().delete();
-                                    }
+                                    });
                                 }
                             });
 
@@ -129,7 +127,6 @@ public class DeleteUserActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-
                                         Toast.makeText(DeleteUserActivity.this,"Account deleted successfully! Logged out...",Toast.LENGTH_SHORT).show();
                                         FirebaseUtil.logOut();
                                         Intent i = new Intent(DeleteUserActivity.this, LoginActivity.class);
