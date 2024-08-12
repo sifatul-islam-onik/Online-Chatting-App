@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.BlendModeColorFilterCompat;
+import androidx.core.graphics.BlendModeCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -20,6 +24,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyclerAdapter.PostViewHolder> {
 
@@ -35,6 +41,14 @@ public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyc
         holder.name.setText(model.getName());
         holder.username.setText(model.getUsername());
         holder.time.setText(FirebaseUtil.timestampToString(model.getTimestamp()));
+        holder.like.setText(Integer.toString(model.getLike())+" likes");
+
+        if(model.getLikeids().contains(FirebaseUtil.currentUserId())){
+            holder.likebtn.setBackgroundColor(context.getResources().getColor(R.color.splashback));
+        }
+        else{
+            holder.likebtn.setBackgroundColor(context.getResources().getColor(R.color.background));
+        }
 
         FirebaseUtil.getStorageReference().child("userprofiles/"+model.getUserid()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -85,6 +99,38 @@ public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyc
                 });
             }
         });
+
+        holder.likebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(model.getLikeids().contains(FirebaseUtil.currentUserId())){
+                    model.setLike(model.getLike()-1);
+                    List<String>l = model.getLikeids();
+                    l.remove(FirebaseUtil.currentUserId());
+                    model.setLikeids(l);
+                    FirebaseUtil.allPostsCollectionReference().document(model.getPostid()).set(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            holder.likebtn.setBackgroundColor(context.getResources().getColor(R.color.background));
+                        }
+                    });
+                }
+                else{
+                    model.setLike(model.getLike()+1);
+                    List<String>l = model.getLikeids();
+                    l.add(FirebaseUtil.currentUserId());
+                    model.setLikeids(l);
+                    FirebaseUtil.allPostsCollectionReference().document(model.getPostid()).set(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            holder.likebtn.setBackgroundColor(context.getResources().getColor(R.color.splashback));
+                        }
+                    });
+                }
+                holder.like.setText(Integer.toString(model.getLike())+" likes");
+            }
+        });
+
     }
 
     @NonNull
@@ -96,8 +142,9 @@ public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyc
 
     public class PostViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name,username,postTxt,time;
+        TextView name,username,postTxt,time,like;
         ImageView profilePic,postPic,delete;
+        ImageButton likebtn;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -108,6 +155,9 @@ public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyc
             postPic = itemView.findViewById(R.id.imgPost);
             delete = itemView.findViewById(R.id.btnPostDelete);
             time = itemView.findViewById(R.id.txtPostTime);
+            like = itemView.findViewById(R.id.txtPostLike);
+            likebtn = itemView.findViewById(R.id.btnPostLike);
         }
     }
+
 }

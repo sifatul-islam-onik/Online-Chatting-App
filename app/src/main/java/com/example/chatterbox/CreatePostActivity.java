@@ -35,6 +35,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class CreatePostActivity extends AppCompatActivity {
 
@@ -99,7 +100,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 }
                 Timestamp timex = Timestamp.now();
                 time = timex.toString();
-                post = new Post(user.getName(), user.getUsername(), user.getUserId(), timex);
+                post = new Post(user.getName(), user.getUsername(), user.getUserId(),timex);
 
                 if(!text.isEmpty()) post.setText(text);
                 if(flag){
