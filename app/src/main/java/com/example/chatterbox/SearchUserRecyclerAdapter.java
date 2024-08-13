@@ -48,10 +48,7 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<User, Se
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(context, OtherProfileActivity.class);
-                i.putExtra("name",model.getName());
-                i.putExtra("email",model.getEmail());
-                i.putExtra("username",model.getUsername());
-                i.putExtra("userid",model.getUserId());
+                i.putExtra("user",model);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }

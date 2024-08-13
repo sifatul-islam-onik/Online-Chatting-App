@@ -3,6 +3,7 @@ package com.example.chatterbox;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
@@ -38,8 +40,22 @@ public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyc
 
     @Override
     protected void onBindViewHolder(@NonNull PostRecyclerAdapter.PostViewHolder holder, int position, @NonNull Post model) {
-        holder.name.setText(model.getName());
-        holder.username.setText(model.getUsername());
+        User user;
+
+        FirebaseUtil.allUsersCollectionReference().document(model.getUserid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User user = documentSnapshot.toObject(User.class);
+                holder.name.setText(user.getName());
+                holder.username.setText(user.getUsername());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
         holder.time.setText(FirebaseUtil.timestampToString(model.getTimestamp()));
         holder.like.setText(Integer.toString(model.getLike())+" likes");
 
@@ -57,8 +73,14 @@ public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyc
             }
         });
 
-        if(model.getUserid().equals(FirebaseUtil.currentUserId())) holder.delete.setVisibility(View.VISIBLE);
-        else holder.delete.setVisibility(View.GONE);
+        if(model.getUserid().equals(FirebaseUtil.currentUserId())){
+            holder.delete.setVisibility(View.VISIBLE);
+            holder.profilebtn.setVisibility(View.GONE);
+        }
+        else{
+            holder.delete.setVisibility(View.GONE);
+            holder.profilebtn.setVisibility(View.VISIBLE);
+        }
 
         if(model.getText().isEmpty()){
             holder.postTxt.setVisibility(View.GONE);
@@ -131,6 +153,27 @@ public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyc
             }
         });
 
+        holder.profilebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUtil.allUsersCollectionReference().document(model.getUserid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        User user = documentSnapshot.toObject(User.class);
+                        Intent i = new Intent(context, OtherProfileActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.putExtra("user",user);
+                        context.startActivity(i);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
     }
 
     @NonNull
@@ -144,7 +187,7 @@ public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyc
 
         TextView name,username,postTxt,time,like;
         ImageView profilePic,postPic,delete;
-        ImageButton likebtn;
+        ImageButton likebtn,profilebtn;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -157,6 +200,7 @@ public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyc
             time = itemView.findViewById(R.id.txtPostTime);
             like = itemView.findViewById(R.id.txtPostLike);
             likebtn = itemView.findViewById(R.id.btnPostLike);
+            profilebtn = itemView.findViewById(R.id.btnPostProfile);
         }
     }
 

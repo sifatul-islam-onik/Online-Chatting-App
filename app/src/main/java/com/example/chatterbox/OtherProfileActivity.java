@@ -48,17 +48,14 @@ public class OtherProfileActivity extends AppCompatActivity {
         back = findViewById(R.id.btnOtherProfileBack);
 
         Intent i = getIntent();
+        user = i.getParcelableExtra("user");
 
-        FirebaseUtil.getUser(i.getStringExtra("userid")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                username.setText(documentSnapshot.getString("username"));
-                name.setText(documentSnapshot.getString("name"));
-                email.setText(documentSnapshot.getString("email"));
-            }
-        });
+        name.setText(user.getName());
+        email.setText(user.getEmail());
+        username.setText(user.getUsername());
 
-        FirebaseUtil.getStorageReference().child("userprofiles/"+i.getStringExtra("userid")+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+        FirebaseUtil.getStorageReference().child("userprofiles/"+user.getUserId()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(propic);
@@ -69,10 +66,7 @@ public class OtherProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i2 = new Intent(OtherProfileActivity.this, ChatActivity.class);
-                i2.putExtra("name",i.getStringExtra("name"));
-                i2.putExtra("email",i.getStringExtra("email"));
-                i2.putExtra("username",i.getStringExtra("username"));
-                i2.putExtra("userid",i.getStringExtra("userid"));
+                i2.putExtra("user",user);
                 startActivity(i2);
             }
         });
@@ -81,7 +75,7 @@ public class OtherProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i2 = new Intent(OtherProfileActivity.this, PostActivity.class);
-                i2.putExtra("userid",i.getStringExtra("userid"));
+                i2.putExtra("userid",user.getUserId());
                 startActivity(i2);
             }
         });

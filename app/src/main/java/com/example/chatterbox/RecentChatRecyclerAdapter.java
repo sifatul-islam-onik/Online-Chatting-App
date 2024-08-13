@@ -64,10 +64,7 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatRoom
                         @Override
                         public void onClick(View view) {
                             Intent i = new Intent(context, ChatActivity.class);
-                            i.putExtra("name",otheruser.getName());
-                            i.putExtra("email",otheruser.getEmail());
-                            i.putExtra("username",otheruser.getUsername());
-                            i.putExtra("userid",otheruser.getUserId());
+                            i.putExtra("user",otheruser);
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(i);
                         }

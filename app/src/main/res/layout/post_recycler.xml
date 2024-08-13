@@ -25,16 +25,17 @@
             android:layout_centerVertical="true" />
 
         <LinearLayout
+            android:id="@+id/profileinfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_toLeftOf="@id/btnPostDelete"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/postbtnlayout"
             android:layout_toRightOf="@id/profilePicLayout"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/postName"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:paddingLeft="5dp"
@@ -45,7 +46,7 @@
 
             <TextView
                 android:id="@+id/postUsername"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
                 android:text="Username"
@@ -55,17 +56,34 @@
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btnPostDelete"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+        <LinearLayout
+            android:id="@+id/postbtnlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="false"
             android:layout_centerVertical="true"
-            android:backgroundTint="@color/background"
-            android:contentDescription="post delete"
-            android:src="@drawable/icon_delete"
-            android:tint="@android:color/holo_red_light" />
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnPostProfile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/btnPostDelete"
+                android:backgroundTint="@color/background"
+                android:src="@drawable/icon_about" />
+
+            <ImageButton
+                android:id="@+id/btnPostDelete"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:backgroundTint="@color/background"
+                android:contentDescription="post delete"
+                android:src="@drawable/icon_delete"
+                android:tint="@android:color/holo_red_light" />
+        </LinearLayout>
 
     </RelativeLayout>
 

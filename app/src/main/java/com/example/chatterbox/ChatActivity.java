@@ -79,14 +79,10 @@ public class ChatActivity extends AppCompatActivity {
         photo = findViewById(R.id.btnAddphoto);
         profilePic = findViewById(R.id.profilePic);
         recyclerView = findViewById(R.id.recyclerView);
-        otherUser = new User();
 
         Intent i = getIntent();
+        otherUser = i.getParcelableExtra("user");
 
-        otherUser.setUserId(i.getStringExtra("userid"));
-        otherUser.setUsername(i.getStringExtra("username"));
-        otherUser.setName(i.getStringExtra("name"));
-        otherUser.setEmail(i.getStringExtra("email"));
         username.setText(otherUser.getUsername());
         fullname.setText(otherUser.getName());
 
@@ -116,6 +112,10 @@ public class ChatActivity extends AppCompatActivity {
                     openPromt();
                     return;
                 }
+                if(chatRoom==null){
+                    chatRoom = new ChatRoom(chatRoomId, Arrays.asList(FirebaseUtil.currentUserId(),otherUser.getUserId()), Timestamp.now(),"");
+                    FirebaseUtil.getChatRoomReference(chatRoomId).set(chatRoom);
+                }
                 String message = msg.getText().toString().trim();
                 if(message.isEmpty()) return;
                 sendMsg(message);
@@ -128,6 +128,10 @@ public class ChatActivity extends AppCompatActivity {
                 if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
                     openPromt();
                     return;
+                }
+                if(chatRoom==null){
+                    chatRoom = new ChatRoom(chatRoomId, Arrays.asList(FirebaseUtil.currentUserId(),otherUser.getUserId()), Timestamp.now(),"");
+                    FirebaseUtil.getChatRoomReference(chatRoomId).set(chatRoom);
                 }
                 sendPhoto();
             }
@@ -205,10 +209,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void sendPhoto(){
-        if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
-            openPromt();
-            return;
-        }
         chatRoom.setLastMsgSenderId(FirebaseUtil.currentUserId());
         chatRoom.setLastMsgTime(Timestamp.now());
         chatRoom.setLastMsg("");
@@ -217,10 +217,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     void sendMsg(String message) {
-        if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
-            openPromt();
-            return;
-        }
         chatRoom.setLastMsgSenderId(FirebaseUtil.currentUserId());
         chatRoom.setLastMsg(message);
         chatRoom.setLastUrl("");
@@ -244,10 +240,6 @@ public class ChatActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     chatRoom = task.getResult().toObject(ChatRoom.class);
-                    if(chatRoom==null){
-                        chatRoom = new ChatRoom(chatRoomId, Arrays.asList(FirebaseUtil.currentUserId(),otherUser.getUserId()), Timestamp.now(),"");
-                        FirebaseUtil.getChatRoomReference(chatRoomId).set(chatRoom);
-                    }
                 }
             }
         });

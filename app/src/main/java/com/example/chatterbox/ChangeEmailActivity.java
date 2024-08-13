@@ -75,13 +75,13 @@ public class ChangeEmailActivity extends AppCompatActivity {
                                         openPromt();
                                     }
                                     else{
-                                        Toast.makeText(ChangeEmailActivity.this,"Error! "+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ChangeEmailActivity.this,task.getException().getMessage().toString(),Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
                         }
                         else{
-                            Toast.makeText(ChangeEmailActivity.this,"Error! "+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChangeEmailActivity.this,task.getException().getMessage().toString(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -103,7 +103,7 @@ public class ChangeEmailActivity extends AppCompatActivity {
         builder.setIcon(R.drawable.icon_notification);
         builder.setMessage(R.string.change_email);
         builder.setCancelable(false);
-        builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

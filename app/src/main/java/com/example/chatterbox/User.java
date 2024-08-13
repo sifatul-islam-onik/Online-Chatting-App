@@ -1,8 +1,13 @@
 package com.example.chatterbox;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.firebase.Timestamp;
 
-public class User {
+public class User implements Parcelable {
     private String email;
     private String name;
     private String username;
@@ -19,6 +24,26 @@ public class User {
         this.createdTimestamp = createdTimestamp;
         this.userId = userId;
     }
+
+    protected User(Parcel in) {
+        email = in.readString();
+        name = in.readString();
+        username = in.readString();
+        createdTimestamp = in.readParcelable(Timestamp.class.getClassLoader());
+        userId = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getUsername() {
         return username;
@@ -58,5 +83,19 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(email);
+        parcel.writeString(name);
+        parcel.writeString(username);
+        parcel.writeParcelable(createdTimestamp, i);
+        parcel.writeString(userId);
     }
 }

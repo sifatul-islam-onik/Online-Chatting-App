@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
-    String name,username,text,imgUrl,postid,userid;
+    String text,imgUrl,postid,userid;
     Timestamp timestamp;
     List<String>likeids;
     int like;
@@ -14,14 +14,12 @@ public class Post {
     public Post() {
     }
 
-    public Post(String name,String username, String userid,Timestamp timestamp) {
+    public Post(String userid,Timestamp timestamp) {
         this.text = "";
         this.imgUrl = "";
         like = 0;
         this.userid = userid;
         this.timestamp = timestamp;
-        this.name = name;
-        this.username = username;
         this.likeids = new ArrayList<String>();
     }
 
@@ -39,22 +37,6 @@ public class Post {
 
     public void setLike(int like) {
         this.like = like;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPostid() {

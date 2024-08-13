@@ -23,7 +23,6 @@ public class PostActivity extends AppCompatActivity {
     Intent i;
     ImageButton back;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

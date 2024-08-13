@@ -100,7 +100,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 }
                 Timestamp timex = Timestamp.now();
                 time = timex.toString();
-                post = new Post(user.getName(), user.getUsername(), user.getUserId(),timex);
+                post = new Post(user.getUserId(),timex);
 
                 if(!text.isEmpty()) post.setText(text);
                 if(flag){

@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(i);
                         }
                         else{
-                            Toast.makeText(LoginActivity.this,"Error! "+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this,task.getException().getMessage().toString(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -96,7 +96,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         openPromt();
-        return;
     }
 
     void openPromt(){
