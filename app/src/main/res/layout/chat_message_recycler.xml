@@ -18,6 +18,7 @@
             android:id="@+id/otherPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
             tools:srcCompat="@drawable/icon_photo" />
@@ -26,6 +27,7 @@
             android:id="@+id/otherTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:background="@drawable/text_rounded_corner"
             android:backgroundTint="@color/receiver"
             android:padding="10dp"
@@ -65,6 +67,7 @@
             android:id="@+id/myTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:background="@drawable/text_rounded_corner"
             android:backgroundTint="@color/sender"
             android:padding="10dp"

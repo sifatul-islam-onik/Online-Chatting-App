@@ -57,7 +57,7 @@ public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyc
         });
 
         holder.time.setText(FirebaseUtil.timestampToString(model.getTimestamp()));
-        holder.like.setText(Integer.toString(model.getLike())+" likes");
+        holder.like.setText(Integer.toString(model.getLike()));
 
         if(model.getLikeids().contains(FirebaseUtil.currentUserId())){
             holder.likebtn.setBackgroundColor(context.getResources().getColor(R.color.splashback));
@@ -149,7 +149,7 @@ public class PostRecyclerAdapter extends FirestoreRecyclerAdapter<Post,PostRecyc
                         }
                     });
                 }
-                holder.like.setText(Integer.toString(model.getLike())+" likes");
+                holder.like.setText(Integer.toString(model.getLike()));
             }
         });
 
